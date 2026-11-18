@@ -43,6 +43,16 @@ export function KatahList({
               <li
                 data-katah={katah.id}
                 data-favoured={favoured.length > 0 || undefined}
+                className={chosen ? "cursor-pointer" : undefined}
+                onClick={
+                  chosen
+                    ? (event) => {
+                        // The checkbox/label already toggle natively.
+                        if ((event.target as HTMLElement).closest("label")) return;
+                        chosen.onToggle(katah.id);
+                      }
+                    : undefined
+                }
               >
                 <Card
                   highlighted={

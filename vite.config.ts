@@ -7,6 +7,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 const THEME_COLOR = '#0d0c10';
 
 export default defineConfig({
+  base: '/adeptus-custodes/',
   plugins: [
     react(),
     tailwindcss(),

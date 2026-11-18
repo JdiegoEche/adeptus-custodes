@@ -1,0 +1,258 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-ink-950: #0d0c10;
+  --color-ink-900: #17161c;
+  --color-ink-800: #222029;
+  --color-ink-700: #34313d;
+  --color-gold-300: #f0d98a;
+  --color-gold-400: #e4c35c;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #b08f2a;
+  --color-parchment: #ece6d6;
+  --font-display: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+  --header-height: 3.5rem;
+  color-scheme: dark;
+
+  /* Auramite plate design tokens */
+  --auramite: linear-gradient(135deg, #f0d98a, #b08f2a 45%, #f0d98a 70%, #8a6d1d);
+  --plate-fill: linear-gradient(180deg, #1c1a22, #121116);
+  --plate-cut: 14px;
+  --stripe-default: #e4c35c;
+  --meta-text: #9a927f;
+  --label-gold: #b08f2a;
+  --plate-body: #cfc8b6;
+  --plate-effect-text: #fff7e0;
+}
+
+/* Light theme: same tokens, light values. Tailwind utilities read these variables. */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-ink-950: #faf8f2;
+  --color-ink-900: #ffffff;
+  --color-ink-800: #efe9d8;
+  --color-ink-700: #d9d0b6;
+  --color-gold-300: #7a5f12;
+  --color-gold-400: #8a6d1d;
+  --color-gold-500: #8a6d16;
+  --color-gold-600: #6f5610;
+  --color-parchment: #1e1a12;
+  --plate-fill: linear-gradient(180deg, #ffffff, #f4efe0);
+  --plate-body: #3a342a;
+  --plate-effect-text: #14110a;
+  --meta-text: #6c6450;
+  --label-gold: #7a5f12;
+  --stripe-default: #8a6d16;
+}
+
+html {
+  background-color: var(--color-ink-950);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: clip;
+  background-color: var(--color-ink-950);
+  color: var(--color-parchment);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: anywhere;
+}
+
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold-400);
+  outline-offset: 2px;
+}
+
+/* ---------- Auramite plate ---------- */
+/* Outer element draws the metallic border; inner element holds the content. */
+.plate {
+  background: var(--auramite);
+  padding: 1.5px;
+  clip-path: polygon(
+    var(--plate-cut) 0,
+    100% 0,
+    100% calc(100% - var(--plate-cut)),
+    calc(100% - var(--plate-cut)) 100%,
+    0 100%,
+    0 var(--plate-cut)
+  );
+}
+
+.plate-inner {
+  position: relative;
+  padding: 14px 16px 16px 22px;
+  background: var(--plate-fill);
+  clip-path: polygon(
+    calc(var(--plate-cut) - 1px) 0,
+    100% 0,
+    100% calc(100% - var(--plate-cut) + 1px),
+    calc(100% - var(--plate-cut) + 1px) 100%,
+    0 100%,
+    0 calc(var(--plate-cut) - 1px)
+  );
+}
+
+/* Left stripe takes the colour of the stratagem group. */
+.plate-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: var(--stripe, var(--stripe-default));
+}
+
+.plate[data-group='ranged-attack'] { --stripe: #c8453b; }
+.plate[data-group='melee-attack'] { --stripe: #d9692f; }
+.plate[data-group='ranged-defence'] { --stripe: #4f86c6; }
+.plate[data-group='melee-defence'] { --stripe: #7a6fc9; }
+.plate[data-group='movement-charge'] { --stripe: #5aa469; }
+.plate[data-group='opponent-turn-reaction'] { --stripe: #d9a13a; }
+.plate[data-group='objectives-utility'] { --stripe: #b8b0a0; }
+
+.plate-title {
+  margin: 0 56px 2px 0;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  color: var(--color-gold-300);
+}
+
+.plate-meta {
+  margin: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  color: var(--meta-text);
+}
+
+/* CP medallion, top-right. */
+.plate-medallion {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--auramite);
+  color: #1a1405;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  box-shadow: inset 0 0 0 3px #1a1405, inset 0 0 0 4px var(--color-gold-400);
+}
+
+.plate-medallion small {
+  display: block;
+  margin-top: -3px;
+  font-family: var(--font-sans);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Points tag for enhancements, top-right. */
+.plate-points {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  padding: 2px 10px;
+  background: var(--auramite);
+  color: #1a1405;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+/* Field labels and text inside a plate. */
+.plate dt {
+  margin-top: 10px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--label-gold);
+}
+
+.plate dd {
+  margin: 2px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--plate-body);
+}
+
+.plate dd.plate-effect {
+  font-size: 1rem;
+  color: var(--plate-effect-text);
+}
+
+/* Compact variant for enhancements and detachment rows. */
+.plate--compact .plate-title {
+  font-size: 0.9375rem;
+}
+
+.plate--compact .plate-inner {
+  padding-top: 12px;
+}
+
+.plate[data-active='true'] {
+  background: linear-gradient(135deg, #fff2b8, #d4af37 45%, #fff2b8 70%, #b08f2a);
+}
+
+/* Light theme: warning and "to verify" boxes use dark tints with light text on the dark theme. */
+:root[data-theme='light'] .bg-red-950,
+:root[data-theme='light'] .bg-red-950\/60,
+:root[data-theme='light'] .bg-red-950\/40 {
+  background-color: #fde4e1;
+}
+
+:root[data-theme='light'] .text-red-100 {
+  color: #6b1410;
+}
+
+:root[data-theme='light'] .bg-amber-950\/40,
+:root[data-theme='light'] .bg-amber-900\/70 {
+  background-color: #fbebc4;
+}
+
+:root[data-theme='light'] .text-amber-100 {
+  color: #5b3d06;
+}
+
+/* A stratagem marked as used in the battle tracker. */
+.plate[data-used='true'] {
+  opacity: 0.55;
+}
+
+.plate[data-used='true'] .plate-title {
+  text-decoration: line-through;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .plate-inner {
+    transition: filter 150ms ease;
+  }
+}
